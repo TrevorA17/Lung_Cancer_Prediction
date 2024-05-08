@@ -77,3 +77,57 @@ print("Bootstrap Estimate of the Statistic (e.g., mean, median, etc.):")
 print(bootstrap_estimate)
 print("Standard Error of the Bootstrap Estimate:")
 print(bootstrap_standard_error)
+
+# Define the number of repeats for repeated cross-validation (e.g., 3 repeats)
+num_folds <- 3
+
+# Perform repeated cross-validation
+cv_results_repeated <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "glm",  
+  trControl = trainControl(method = "repeatedcv", number = num_folds, repeats = num_repeats)
+)
+
+# Print the repeated cross-validation results
+print(cv_results_repeated)
+
+# Load the caret package
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the training control
+train_control <- trainControl(method = "cv", number = 10)  # 10-fold cross-validation
+
+# Train the Generalized Linear Model (glm)
+model_glm <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "glm",
+  trControl = train_control
+)
+
+# Train the Random Forest model (rf)
+model_rf <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "rf",
+  trControl = train_control
+)
+
+# Train the Support Vector Machine model (svm)
+model_svm <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "svmLinear",
+  trControl = train_control
+)
+
+# Print the models
+print("Trained Models:")
+print(model_glm)
+print(model_rf)
+print(model_svm)
+
