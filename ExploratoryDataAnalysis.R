@@ -104,3 +104,83 @@ lung_cancer_freq <- table(lung_cancer_data$LUNG_CANCER)
 print("Frequency of Lung Cancer:")
 print(lung_cancer_freq)
 
+# Measures of Central Tendency
+
+# Calculate mean, median, and mode for AGE
+age_mean <- mean(lung_cancer_data$AGE)
+age_median <- median(lung_cancer_data$AGE)
+age_mode <- as.numeric(names(sort(-table(lung_cancer_data$AGE))[1]))
+
+print("Measures of Central Tendency for Age:")
+print(paste("Mean:", age_mean))
+print(paste("Median:", age_median))
+print(paste("Mode:", age_mode))
+
+# For categorical variables, we can only calculate mode
+# Calculate mode for other variables
+
+# Function to calculate mode
+calculate_mode <- function(x) {
+  tbl <- table(x)
+  mode_value <- as.numeric(names(tbl)[which.max(tbl)])
+  return(mode_value)
+}
+
+# Calculate mode for other variables
+mode_smoking <- calculate_mode(lung_cancer_data$SMOKING)
+mode_yellow_fingers <- calculate_mode(lung_cancer_data$YELLOW_FINGERS)
+mode_anxiety <- calculate_mode(lung_cancer_data$ANXIETY)
+mode_peer_pressure <- calculate_mode(lung_cancer_data$PEER_PRESSURE)
+mode_chronic_disease <- calculate_mode(lung_cancer_data$CHRONIC_DISEASE)
+mode_fatigue <- calculate_mode(lung_cancer_data$FATIGUE)
+mode_allergy <- calculate_mode(lung_cancer_data$ALLERGY)
+mode_wheezing <- calculate_mode(lung_cancer_data$WHEEZING)
+mode_alcohol_consuming <- calculate_mode(lung_cancer_data$ALCOHOL_CONSUMING)
+mode_coughing <- calculate_mode(lung_cancer_data$COUGHING)
+mode_shortness_of_breath <- calculate_mode(lung_cancer_data$SHORTNESS_OF_BREATH)
+mode_swallowing_difficulty <- calculate_mode(lung_cancer_data$SWALLOWING_DIFFICULTY)
+mode_chest_pain <- calculate_mode(lung_cancer_data$CHEST_PAIN)
+
+# Print the calculated modes
+print("Mode for Smoking:")
+print(mode_smoking)
+
+print("Mode for Yellow Fingers:")
+print(mode_yellow_fingers)
+
+print("Mode for Anxiety:")
+print(mode_anxiety)
+
+print("Mode for Peer Pressure:")
+print(mode_peer_pressure)
+
+print("Mode for Chronic Disease:")
+print(mode_chronic_disease)
+
+print("Mode for Fatigue:")
+print(mode_fatigue)
+
+print("Mode for Allergy:")
+print(mode_allergy)
+
+print("Mode for Wheezing:")
+print(mode_wheezing)
+
+print("Mode for Alcohol Consuming:")
+print(mode_alcohol_consuming)
+
+print("Mode for Coughing:")
+print(mode_coughing)
+
+print("Mode for Shortness of Breath:")
+print(mode_shortness_of_breath)
+
+print("Mode for Swallowing Difficulty:")
+print(mode_swallowing_difficulty)
+
+print("Mode for Chest Pain:")
+print(mode_chest_pain)
+
+
+
+
