@@ -181,6 +181,78 @@ print(mode_swallowing_difficulty)
 print("Mode for Chest Pain:")
 print(mode_chest_pain)
 
+# Measures of Distribution
+
+# Frequency distribution for categorical variables
+# Function to calculate frequency distribution
+calculate_frequency_distribution <- function(x) {
+  tbl <- table(x)
+  freq_dist <- data.frame(Level = as.numeric(names(tbl)), Frequency = as.numeric(tbl))
+  return(freq_dist)
+}
+
+# Calculate frequency distribution for categorical variables
+freq_dist_gender <- calculate_frequency_distribution(lung_cancer_data$GENDER)
+freq_dist_smoking <- calculate_frequency_distribution(lung_cancer_data$SMOKING)
+freq_dist_yellow_fingers <- calculate_frequency_distribution(lung_cancer_data$YELLOW_FINGERS)
+freq_dist_anxiety <- calculate_frequency_distribution(lung_cancer_data$ANXIETY)
+freq_dist_peer_pressure <- calculate_frequency_distribution(lung_cancer_data$PEER_PRESSURE)
+freq_dist_chronic_disease <- calculate_frequency_distribution(lung_cancer_data$CHRONIC_DISEASE)
+freq_dist_fatigue <- calculate_frequency_distribution(lung_cancer_data$FATIGUE)
+freq_dist_allergy <- calculate_frequency_distribution(lung_cancer_data$ALLERGY)
+freq_dist_wheezing <- calculate_frequency_distribution(lung_cancer_data$WHEEZING)
+freq_dist_alcohol_consuming <- calculate_frequency_distribution(lung_cancer_data$ALCOHOL_CONSUMING)
+freq_dist_coughing <- calculate_frequency_distribution(lung_cancer_data$COUGHING)
+freq_dist_shortness_of_breath <- calculate_frequency_distribution(lung_cancer_data$SHORTNESS_OF_BREATH)
+freq_dist_swallowing_difficulty <- calculate_frequency_distribution(lung_cancer_data$SWALLOWING_DIFFICULTY)
+freq_dist_chest_pain <- calculate_frequency_distribution(lung_cancer_data$CHEST_PAIN)
+freq_dist_lung_cancer <- calculate_frequency_distribution(lung_cancer_data$LUNG_CANCER)
+
+# Print the frequency distribution for each categorical variable
+print("Frequency Distribution for Gender:")
+print(freq_dist_gender)
+
+print("Frequency Distribution for Smoking:")
+print(freq_dist_smoking)
+
+print("Frequency Distribution for Yellow Fingers:")
+print(freq_dist_yellow_fingers)
+
+print("Frequency Distribution for Anxiety:")
+print(freq_dist_anxiety)
+
+print("Frequency Distribution for Peer Pressure:")
+print(freq_dist_peer_pressure)
+
+print("Frequency Distribution for Chronic Disease:")
+print(freq_dist_chronic_disease)
+
+print("Frequency Distribution for Fatigue:")
+print(freq_dist_fatigue)
+
+print("Frequency Distribution for Allergy:")
+print(freq_dist_allergy)
+
+print("Frequency Distribution for Wheezing:")
+print(freq_dist_wheezing)
+
+print("Frequency Distribution for Alcohol Consuming:")
+print(freq_dist_alcohol_consuming)
+
+print("Frequency Distribution for Coughing:")
+print(freq_dist_coughing)
+
+print("Frequency Distribution for Shortness of Breath:")
+print(freq_dist_shortness_of_breath)
+
+print("Frequency Distribution for Swallowing Difficulty:")
+print(freq_dist_swallowing_difficulty)
+
+print("Frequency Distribution for Chest Pain:")
+print(freq_dist_chest_pain)
+
+print("Frequency Distribution for Lung Cancer:")
+print(freq_dist_lung_cancer)
 
 
 
