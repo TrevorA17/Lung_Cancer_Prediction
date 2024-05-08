@@ -275,6 +275,18 @@ anova_gender_age <- aov(AGE ~ GENDER, data = lung_cancer_data)
 print("ANOVA for Gender and Age:")
 print(summary(anova_gender_age))
 
+# Histogram for Age
+hist(lung_cancer_data$AGE, main = "Histogram of Age", xlab = "Age", col = "skyblue", border = "black")
+
+# Bar plot for Gender
+barplot(table(lung_cancer_data$GENDER), main = "Bar Plot of Gender", xlab = "Gender", ylab = "Frequency", col = "skyblue")
+
+# Pie chart for Smoking
+pie(table(lung_cancer_data$SMOKING), main = "Pie Chart of Smoking", col = rainbow(length(unique(lung_cancer_data$SMOKING))))
+
+# Box plot for Age
+boxplot(lung_cancer_data$AGE, main = "Box Plot of Age", ylab = "Age", col = "skyblue")
+
 
 
 
