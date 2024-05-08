@@ -26,3 +26,8 @@ head(lung_cancer_data)
 
 # View the dataset in a separate viewer window
 View(lung_cancer_data)
+
+# Summarize missing values for each variable
+missing_values_summary <- sapply(lung_cancer_data, function(x) sum(is.na(x) | is.null(x)))
+print("Summary of Missing Values:")
+print(missing_values_summary)
