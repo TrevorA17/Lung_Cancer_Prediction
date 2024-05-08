@@ -290,9 +290,6 @@ boxplot(lung_cancer_data$AGE, main = "Box Plot of Age", ylab = "Age", col = "sky
 # Load the library for scatterplot matrix
 library(GGally)
 
-# Create a scatterplot matrix for numerical variables
-ggpairs(lung_cancer_data[, c("AGE")])
-
 # Grouped boxplot for Age by Gender
 boxplot(AGE ~ GENDER, data = lung_cancer_data, main = "Grouped Boxplot of Age by Gender", xlab = "Gender", ylab = "Age", col = "skyblue")
 
@@ -302,17 +299,7 @@ ggplot(lung_cancer_data, aes(x = SMOKING, y = AGE, fill = SMOKING)) +
   geom_violin() +
   labs(title = "Violin Plot of Age by Smoking", x = "Smoking", y = "Age")
 
-# Correlation matrix for numerical variables
-numerical_variables <- lung_cancer_data[, c("AGE")]
-correlation_matrix <- cor(numerical_variables)
 
-# Heatmap for correlation matrix
-ggplot(data = as.data.frame(correlation_matrix), aes(x = Var1, y = Var2, fill = corr)) +
-  geom_tile() +
-  geom_text(aes(label = round(corr, 2)), size = 4) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_gradient(low = "blue", high = "red") +
-  labs(title = "Correlation Heatmap of Numerical Variables")
 
 # Stacked bar plot for Smoking and Lung Cancer
 lung_cancer_data$SMOKING_LUNG_CANCER <- interaction(lung_cancer_data$SMOKING, lung_cancer_data$LUNG_CANCER)
