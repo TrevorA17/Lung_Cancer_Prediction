@@ -1,7 +1,7 @@
 # Load dataset
 lung_cancer_data <- read.csv("data/lung_cancer.csv", colClasses = c(
   GENDER = "factor",
-  AGE = "integer",
+  AGE = "numeric",
   SMOKING = "factor",
   YELLOW_FINGERS = "factor",
   ANXIETY = "factor",
@@ -253,6 +253,28 @@ print(freq_dist_chest_pain)
 
 print("Frequency Distribution for Lung Cancer:")
 print(freq_dist_lung_cancer)
+
+# Contingency table and chi-square test for Gender and Lung Cancer
+gender_lung_contingency <- table(lung_cancer_data$GENDER, lung_cancer_data$LUNG_CANCER)
+print("Contingency Table for Gender and Lung Cancer:")
+print(gender_lung_contingency)
+
+chi_square_gender_lung <- chisq.test(gender_lung_contingency)
+print("Chi-square Test for Gender and Lung Cancer:")
+print(chi_square_gender_lung)
+
+# Correlation matrix for numerical variables
+numerical_variables <- lung_cancer_data[, c("SMOKING")]
+
+correlation_matrix <- cor(numerical_variables)
+print("Correlation Matrix for Numerical Variables:")
+print(correlation_matrix)
+
+# ANOVA for Gender and Age
+anova_gender_age <- aov(AGE ~ GENDER, data = lung_cancer_data)
+print("ANOVA for Gender and Age:")
+print(summary(anova_gender_age))
+
 
 
 
