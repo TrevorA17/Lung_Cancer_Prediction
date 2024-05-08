@@ -131,3 +131,15 @@ print(model_glm)
 print(model_rf)
 print(model_svm)
 
+# Load the caret package
+library(caret)
+
+# Define the models
+models <- list(glm = model_glm, rf = model_rf, svm = model_svm)
+
+# Compare model performance using resamples
+model_resamples <- resamples(models)
+
+# Summarize the results
+summary(model_resamples)
+
