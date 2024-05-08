@@ -46,3 +46,34 @@ print("Dimensions of the Training Set:")
 print(dim(lung_cancer_train))
 print("Dimensions of the Testing Set:")
 print(dim(lung_cancer_test))
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the number of bootstrap samples
+num_bootstrap_samples <- 1000
+
+# Create an empty vector to store bootstrapped statistics
+bootstrap_statistics <- numeric(num_bootstrap_samples)
+
+# Perform bootstrapping
+for (i in 1:num_bootstrap_samples) {
+  # Generate a bootstrap sample by sampling with replacement from the original dataset
+  bootstrap_sample <- lung_cancer_data[sample(nrow(lung_cancer_data), replace = TRUE), ]
+  
+  # Calculate the statistic of interest (e.g., mean, median, etc.) for the bootstrap sample
+  # For example, let's calculate the mean of AGE
+  bootstrap_statistics[i] <- mean(bootstrap_sample$AGE)
+}
+
+# Calculate the bootstrap estimate of the statistic (e.g., mean, median, etc.)
+bootstrap_estimate <- mean(bootstrap_statistics)
+
+# Calculate the standard error of the bootstrap estimate
+bootstrap_standard_error <- sd(bootstrap_statistics)
+
+# Print the bootstrap estimate and its standard error
+print("Bootstrap Estimate of the Statistic (e.g., mean, median, etc.):")
+print(bootstrap_estimate)
+print("Standard Error of the Bootstrap Estimate:")
+print(bootstrap_standard_error)
