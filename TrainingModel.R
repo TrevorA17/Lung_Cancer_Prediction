@@ -78,8 +78,17 @@ print(bootstrap_estimate)
 print("Standard Error of the Bootstrap Estimate:")
 print(bootstrap_standard_error)
 
+# Install caret if not already installed
+if (!requireNamespace("caret", quietly = TRUE)) {
+  install.packages("caret")
+}
+
+# Load the caret package
+library(caret)
+
 # Define the number of repeats for repeated cross-validation (e.g., 3 repeats)
 num_folds <- 3
+num_repeats <- 3
 
 # Perform repeated cross-validation
 cv_results_repeated <- train(

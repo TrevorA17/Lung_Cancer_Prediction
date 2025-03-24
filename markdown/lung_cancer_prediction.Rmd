@@ -1,5 +1,55 @@
+---
+title: "Lung Cancer Prediction"
+author: "Trevor Okinda"
+date: "2024"
+output:
+  github_document: 
+    toc: yes
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    df_print: default
+editor_options:
+  chunk_output_type: console
+---
+
+# Student Details
+
+|                                              |     |
+|----------------------------------------------|-----|
+| **Student ID Number**                        | 134780 |
+| **Student Name**                             | Trevor Okinda |
+| **BBIT 4.2 Group**                           | C |
+| **Project Name**                             | Lung Cancer Prediction |
+
+# Setup Chunk
+
+**Note:** the following KnitR options have been set as the global defaults: <BR> `knitr::opts_chunk$set(echo = TRUE, warning = FALSE, eval = TRUE, collapse = FALSE, tidy = TRUE)`.
+
+More KnitR options are documented here <https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html> and here <https://yihui.org/knitr/options/>.
+
+```{r setup, include=FALSE}
+library(formatR)
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = FALSE
+)
+```
+
+### Source: 
+
+The dataset that was used can be downloaded here: *\<https://www.kaggle.com/datasets/nancyalaswad90/lung-cancer\>*
+
+### Reference:
+
+*\<Hong, Z. Q., & Yang, J. Y. (1991). Lung Cancer Dataset [Dataset]. Kaggle. Retrieved from https://www.kaggle.com/datasets/nancyalaswad90/lung-cancer/\>\
+Refer to the APA 7th edition manual for rules on how to cite datasets: <https://apastyle.apa.org/style-grammar-guidelines/references/examples/data-set-references>*
+
+# Exploratory Data Analysis
+##Load dataset
+```{r Load dataset}
 # Load dataset
-lung_cancer_data <- read.csv("data/lung_cancer.csv", colClasses = c(
+lung_cancer_data <- read.csv("lung_cancer.csv", colClasses = c(
   GENDER = "factor",
   AGE = "numeric",
   SMOKING = "factor",
@@ -26,7 +76,10 @@ head(lung_cancer_data)
 
 # View the dataset in a separate viewer window
 View(lung_cancer_data)
+```
 
+## Measures of frequency
+```{r MOF}
 # Measures of Frequency
 
 # Count of observations for each level of GENDER
@@ -103,7 +156,10 @@ print(chest_pain_freq)
 lung_cancer_freq <- table(lung_cancer_data$LUNG_CANCER)
 print("Frequency of Lung Cancer:")
 print(lung_cancer_freq)
+```
 
+## Measures of Central Tendency
+```{r MOCT}
 # Measures of Central Tendency
 
 # Calculate mean, median, and mode for AGE
@@ -180,7 +236,10 @@ print(mode_swallowing_difficulty)
 
 print("Mode for Chest Pain:")
 print(mode_chest_pain)
+```
 
+## Measures of Distribution
+```{r MOD}
 # Measures of Distribution
 
 # Frequency distribution for categorical variables
@@ -253,7 +312,10 @@ print(freq_dist_chest_pain)
 
 print("Frequency Distribution for Lung Cancer:")
 print(freq_dist_lung_cancer)
+```
 
+## Measures of Relationship
+```{r MOR}
 # Contingency table and chi-square test for Gender and Lung Cancer
 gender_lung_contingency <- table(lung_cancer_data$GENDER, lung_cancer_data$LUNG_CANCER)
 print("Contingency Table for Gender and Lung Cancer:")
@@ -267,7 +329,10 @@ print(chi_square_gender_lung)
 anova_gender_age <- aov(AGE ~ GENDER, data = lung_cancer_data)
 print("ANOVA for Gender and Age:")
 print(summary(anova_gender_age))
+```
 
+## Plots
+```{r Plots}
 # Histogram for Age
 hist(lung_cancer_data$AGE, main = "Histogram of Age", xlab = "Age", col = "skyblue", border = "black")
 
@@ -299,7 +364,180 @@ lung_cancer_data$SMOKING_LUNG_CANCER <- interaction(lung_cancer_data$SMOKING, lu
 table_data <- table(lung_cancer_data$SMOKING_LUNG_CANCER)
 barplot(table_data, main = "Stacked Bar Plot of Smoking and Lung Cancer", xlab = "Smoking and Lung Cancer", col = rainbow(nrow(table_data)))
 legend("topright", legend = rownames(table_data), fill = rainbow(nrow(table_data)))
+```
 
+# Preprocessing and Data Transformation
+## Missing Values
+```{r Missing Values}
+# Summarize missing values for each variable
+missing_values_summary <- sapply(lung_cancer_data, function(x) sum(is.na(x) | is.null(x)))
+print("Summary of Missing Values:")
+print(missing_values_summary)
+```
 
+# Training Model
+## Data Splitting
+```{r Data Splitting}
+# Load the caret package for data splitting
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the percentage of data to be used for training (e.g., 80%)
+train_percentage <- 0.8
+
+# Split the data into training and testing sets
+train_index <- createDataPartition(lung_cancer_data$LUNG_CANCER, p = train_percentage, list = FALSE)
+lung_cancer_train <- lung_cancer_data[train_index, ]
+lung_cancer_test <- lung_cancer_data[-train_index, ]
+
+# Print the dimensions of the training and testing sets
+print("Dimensions of the Training Set:")
+print(dim(lung_cancer_train))
+print("Dimensions of the Testing Set:")
+print(dim(lung_cancer_test))
+```
+
+## Bootstrapping
+```{r Bootstrapping}
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the number of bootstrap samples
+num_bootstrap_samples <- 1000
+
+# Create an empty vector to store bootstrapped statistics
+bootstrap_statistics <- numeric(num_bootstrap_samples)
+
+# Perform bootstrapping
+for (i in 1:num_bootstrap_samples) {
+  # Generate a bootstrap sample by sampling with replacement from the original dataset
+  bootstrap_sample <- lung_cancer_data[sample(nrow(lung_cancer_data), replace = TRUE), ]
+  
+  # Calculate the statistic of interest (e.g., mean, median, etc.) for the bootstrap sample
+  # For example, let's calculate the mean of AGE
+  bootstrap_statistics[i] <- mean(bootstrap_sample$AGE)
+}
+
+# Calculate the bootstrap estimate of the statistic (e.g., mean, median, etc.)
+bootstrap_estimate <- mean(bootstrap_statistics)
+
+# Calculate the standard error of the bootstrap estimate
+bootstrap_standard_error <- sd(bootstrap_statistics)
+
+# Print the bootstrap estimate and its standard error
+print("Bootstrap Estimate of the Statistic (e.g., mean, median, etc.):")
+print(bootstrap_estimate)
+print("Standard Error of the Bootstrap Estimate:")
+print(bootstrap_standard_error)
+```
+
+## Cross-Validation
+```{r Cross-validation}
+# Define the number of repeats for repeated cross-validation (e.g., 3 repeats)
+num_folds <- 5
+num_repeats <- 3
+
+# Perform repeated cross-validation
+cv_results_repeated <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "glm",  
+  trControl = trainControl(method = "repeatedcv", number = num_folds, repeats = num_repeats)
+)
+
+# Print the repeated cross-validation results
+print(cv_results_repeated)
+```
+
+## Training Different Models
+```{r Model training}
+# Load the caret package
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the training control
+train_control <- trainControl(method = "cv", number = 10)  # 10-fold cross-validation
+
+# Train the Generalized Linear Model (glm)
+model_glm <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "glm",
+  trControl = train_control
+)
+
+# Train the Random Forest model (rf)
+model_rf <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "rf",
+  trControl = train_control
+)
+
+# Train the Support Vector Machine model (svm)
+model_svm <- train(
+  LUNG_CANCER ~ ., 
+  data = lung_cancer_data, 
+  method = "svmLinear",
+  trControl = train_control
+)
+
+# Print the models
+print("Trained Models:")
+print(model_glm)
+print(model_rf)
+print(model_svm)
+```
+
+## Performance Comparison
+```{r Performance Comparison}
+# Load the caret package
+library(caret)
+
+# Define the models
+models <- list(glm = model_glm, rf = model_rf, svm = model_svm)
+
+# Compare model performance using resamples
+model_resamples <- resamples(models)
+
+# Summarize the results
+summary(model_resamples)
+```
+
+## Saving Model
+```{r Saving Model}
+# Load the saved model
+loaded_glm_model <- readRDS("./models/glm_model.rds")
+
+# Prepare new data for prediction
+new_data <- data.frame(
+  GENDER = factor("M", levels = levels(lung_cancer_data$GENDER)),  # Ensure factor levels match training data
+  AGE = 40,
+  SMOKING = factor(1, levels = levels(lung_cancer_data$SMOKING)),  # Ensure factor levels match training data
+  YELLOW_FINGERS = factor(2, levels = levels(lung_cancer_data$YELLOW_FINGERS)),  # Ensure factor levels match training data
+  ANXIETY = factor(1, levels = levels(lung_cancer_data$ANXIETY)),  # Ensure factor levels match training data
+  PEER_PRESSURE = factor(2, levels = levels(lung_cancer_data$PEER_PRESSURE)),  # Ensure factor levels match training data
+  CHRONIC_DISEASE = factor(1, levels = levels(lung_cancer_data$CHRONIC_DISEASE)),  # Ensure factor levels match training data
+  FATIGUE = factor(1, levels = levels(lung_cancer_data$FATIGUE)),  # Ensure factor levels match training data
+  ALLERGY = factor(2, levels = levels(lung_cancer_data$ALLERGY)),  # Ensure factor levels match training data
+  WHEEZING = factor(2, levels = levels(lung_cancer_data$WHEEZING)),  # Ensure factor levels match training data
+  ALCOHOL_CONSUMING = factor(2, levels = levels(lung_cancer_data$ALCOHOL_CONSUMING)),  # Ensure factor levels match training data
+  COUGHING = factor(1, levels = levels(lung_cancer_data$COUGHING)),  # Ensure factor levels match training data
+  SHORTNESS_OF_BREATH = factor(2, levels = levels(lung_cancer_data$SHORTNESS_OF_BREATH)),  # Ensure factor levels match training data
+  SWALLOWING_DIFFICULTY = factor(2, levels = levels(lung_cancer_data$SWALLOWING_DIFFICULTY)),  # Ensure factor levels match training data
+  CHEST_PAIN = factor(2, levels = levels(lung_cancer_data$CHEST_PAIN))  # Ensure factor levels match training data
+)
+
+# Use the loaded model to make predictions
+predictions_loaded_model <- predict(loaded_glm_model, newdata = new_data)
+
+# Print predictions
+print(predictions_loaded_model)
+
+```
 
 
